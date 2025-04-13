@@ -7,8 +7,12 @@ const images = [
 function showStep(stepIndex) {
   const steps = document.querySelectorAll('.step');
   steps.forEach((el, i) => el.classList.toggle('active', i === stepIndex));
-  document.getElementById('stepImg').src = images[stepIndex];
-  
+
+  // Update the image for each step
+  const stepImg = document.getElementById('stepImg');
+  stepImg.src = images[stepIndex] || images[images.length - 1];
+
+  // Update button text
   const nextBtn = document.getElementById('nextBtn');
   if (stepIndex === steps.length - 1) {
     nextBtn.textContent = 'Restart';
@@ -29,6 +33,7 @@ function nextStep() {
     return;
   }
 
+  // If we're on the second-last step, calculate voltages
   if (step === maxStep - 1) {
     calculateAndDisplayVoltages();
   }
@@ -38,28 +43,27 @@ function nextStep() {
 }
 
 function prevStep() {
-  if (step > 0) step--;
-  showStep(step);
+  if (step > 0) {
+    step--;
+    showStep(step);
+  }
 }
 
+// Recursive voltage function
 function voltage(n, a, vo, memo = {}) {
   if (n in memo) return memo[n];
   if (n === 1) {
-    memo[n] = (vo *Math.pow(a, n)*(a-1)) / (Math.pow(a, n+1)-1);
+    memo[n] = (vo * Math.pow(a, n) * (a - 1)) / (Math.pow(a, n + 1) - 1);
   } else if (n === 0) {
     memo[n] = 0;
   } else {
-    memo[n] = voltage(n - 1, a, vo, memo) * (1 + 1/a) - voltage(n - 2, a, vo, memo) /a;
+    memo[n] = voltage(n - 1, a, vo, memo) * (1 + 1 / a) - voltage(n - 2, a, vo, memo) / a;
   }
   return memo[n];
 }
 
 function calculateVoltages(n, d, D, vo) {
-<<<<<<< HEAD
-  const a = Math.pow(D / d, n+1);
-=======
-  const a = Math.pow(D / d, 1/(n+1));
->>>>>>> main
+  const a = Math.pow(D / d, 1 / (n + 1));
   const results = [];
   for (let i = 1; i <= n; i++) {
     results.push(voltage(i, a, vo));
@@ -82,12 +86,14 @@ function calculateAndDisplayVoltages() {
   }
 
   const results = calculateVoltages(n, d, D, vo);
-  results.forEach((voltage, index) => {
+  results.forEach((voltageValue, index) => {
     const p = document.createElement('p');
-    p.textContent = `Voltage at Sheath ${index + 1}: ${voltage.toFixed(2)} V`;
+    p.textContent = `Voltage at Sheath ${index + 1}: ${voltageValue.toFixed(2)} V`;
     outputDiv.appendChild(p);
   });
 }
 
-// Initialize first step
-showStep(0);
+// Initialize the first step
+document.addEventListener('DOMContentLoaded', () => {
+  showStep(0);
+});
