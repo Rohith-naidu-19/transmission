@@ -55,7 +55,7 @@ function voltage(n, a, vo, memo = {}) {
 }
 
 function calculateVoltages(n, d, D, vo) {
-  const a = Math.pow(D / d, 1/n);
+  const a = Math.pow(D / d, 1/(n+1));
   const results = [];
   for (let i = 1; i <= n; i++) {
     results.push(voltage(i, a, vo));
