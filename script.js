@@ -45,17 +45,21 @@ function prevStep() {
 function voltage(n, a, vo, memo = {}) {
   if (n in memo) return memo[n];
   if (n === 1) {
-    memo[n] = (vo * a * a) / (1 + a + a * a);
+    memo[n] = (vo *Math.pow(a, n)*(a-1)) / (Math.pow(a, n+1)-1);
   } else if (n === 0) {
     memo[n] = 0;
   } else {
-    memo[n] = voltage(n - 1, a, vo, memo) * (1 + 1 / a) - voltage(n - 2, a, vo, memo) / a;
+    memo[n] = voltage(n - 1, a, vo, memo) * (1 + 1/a) - voltage(n - 2, a, vo, memo) /a;
   }
   return memo[n];
 }
 
 function calculateVoltages(n, d, D, vo) {
+<<<<<<< HEAD
+  const a = Math.pow(D / d, n+1);
+=======
   const a = Math.pow(D / d, 1/(n+1));
+>>>>>>> main
   const results = [];
   for (let i = 1; i <= n; i++) {
     results.push(voltage(i, a, vo));
