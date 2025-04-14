@@ -90,9 +90,9 @@ function calculateAndDisplayVoltages() {
     // --- Add Potential Gradient Summary Section ---
     const lnA = Math.log(a);
     const denom = (d / 2) * lnA;
-  
-    const gradientWithout = vo / ((n + 1) * denom);
-    const gradientWith = (vo * (a - 1)) / ((Math.pow(a, n + 1) - 1) * denom);
+    const v1=vo*Math.pow(2,0.5);
+    const gradientWithout = v1 / ((n + 1) * denom);
+    const gradientWith = (v1 * (a - 1)) / ((Math.pow(a, n + 1) - 1) * denom);
   
     const gradientSection = document.createElement('div');
     gradientSection.innerHTML = `
